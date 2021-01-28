@@ -27,7 +27,7 @@
 #define MAX_SAMPLES 100000
 
 void usage(const char *prog) {
-  fprintf(stderr, "Usage: %s <samples>\n", prog);
+  fprintf(stderr, "Usage: %s <samples> [<delay cycles>]\n", prog);
   exit(1);
 }
 

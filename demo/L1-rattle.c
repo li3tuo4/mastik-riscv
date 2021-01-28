@@ -4,6 +4,10 @@
 
 volatile char buffer[4096];
 
+//arguments
+//  location 1
+//  location 2
+//  number of times to access
 int main(int ac, char **av) {
   //default values from original mastic repo
   int rattle_1 = 800;
