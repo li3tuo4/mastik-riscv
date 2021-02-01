@@ -27,12 +27,13 @@
 #define MAX_SAMPLES 100000
 
 void usage(const char *prog) {
-  fprintf(stderr, "Usage: %s <samples>\n", prog);
+  fprintf(stderr, "Usage: %s <samples> [<delay cycles>]\n", prog);
   exit(1);
 }
 
 int main(int ac, char **av) {
   int samples = 0;
+  unsigned int num_delay_cycles = 3000000000U; //default value used in mastic repo
 
   if (av[1] == NULL)
     usage(av[0]);
@@ -41,6 +42,14 @@ int main(int ac, char **av) {
     usage(av[0]);
   if (samples > MAX_SAMPLES)
     samples = MAX_SAMPLES;
+  if (ac == 3){
+    int d_c = atoi(av[2]);
+    if (d_c > 0){
+      num_delay_cycles = (unsigned int) d_c;
+    }
+
+  }
+  fprintf(stderr, "capturing with samples: %d and delay cycle %d\n", samples, num_delay_cycles);
   l1pp_t l1 = l1_prepare();
 
   int nsets = l1_getmonitoredset(l1, NULL, 0);
@@ -59,7 +68,7 @@ int main(int ac, char **av) {
   for (int i = 0; i < samples * nsets; i+= 4096/sizeof(uint16_t))
     res[i] = 1;
   
-  delayloop(3000000000U);
+  delayloop(num_delay_cycles);
   l1_repeatedprobe(l1, samples, res, 0);
 
 
